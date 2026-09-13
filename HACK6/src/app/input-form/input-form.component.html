@@ -1,0 +1,81 @@
+<form [formGroup]="lensOrder" class="container">
+  <div class="column">
+    <!-- Customer Data Section -->
+    <section class="section">
+      <h2>Customer Data</h2>
+      <div class="form-group">
+        <label for="customer">Customer</label>
+        <input type="text" id="customer" placeholder="Search Customer" />
+        <button type="button">Customer Card</button>
+      </div>
+      <div class="form-group">
+        <label for="shipToAddress">Ship To Address</label>
+        <input type="text" id="shipToAddress" />
+      </div>
+      <div class="form-group">
+        <label for="orderReference">Order Reference</label>
+        <input type="text" id="orderReference" />
+      </div>
+      <div class="form-group">
+        <label for="orderType">Order Type</label>
+        <input type="text" id="orderType" />
+      </div>
+      <!-- Refraction Section -->
+      <section class="section">
+        <h2>Refraction</h2>
+        <div class="refraction-inputs" formGroupName="left">
+          <label>R</label>
+          <input type="text" placeholder="Sphere" formControlName="sphere" />
+          <input
+            type="text"
+            placeholder="Cylinder"
+            formControlName="cylinder"
+          />
+          <input type="text" placeholder="Axis" formControlName="axis" />
+          <input
+            type="text"
+            placeholder="Addition"
+            formControlName="addition"
+          />
+        </div>
+        <div class="refraction-inputs" formGroupName="right">
+          <label>L</label>
+          <input type="text" placeholder="Sphere" formControlName="sphere" />
+          <input
+            type="text"
+            placeholder="Cylinder"
+            formControlName="cylinder"
+          />
+          <input type="text" placeholder="Axis" formControlName="axis" />
+          <input
+            type="text"
+            placeholder="Addition"
+            formControlName="addition"
+          />
+        </div>
+      </section>
+    </section>
+  </div>
+  <div class="column">
+    <!-- Lens Selection Section -->
+    <section class="section">
+      <h2>Lens Selection</h2>
+      <section>
+        <div class="form-group">
+          <label for="pupilDistance">Pupil distance</label>
+          <input type="text" id="pupilDistance" formControlName="pupilDistance" />
+        </div>
+        <div class="form-group">
+          <label for="baseCurve">Base curve</label>
+          <input type="text" id="baseCurve" formControlName="baseCurve" />
+        </div>
+        <div class="form-group">
+          <label for="material">Lens material</label>
+          <input type="text" id="material" formControlName="material" />
+        </div>
+      </section>
+    </section>
+
+    <button type="button" (click)="updateOrder()">Update order</button>
+  </div>
+</form>

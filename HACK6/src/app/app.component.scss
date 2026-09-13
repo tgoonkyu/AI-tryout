@@ -1,0 +1,20 @@
+body {
+  &>div{
+  display:none;
+}
+}
+
+.container {
+  width: 85vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  grid-template-rows: 1fr;
+  grid-template-areas: "L M";
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.full_height,
+.full_height > * {
+  height: 100vh;
+}
