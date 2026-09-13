@@ -1,5 +1,5 @@
 export const environment = {
-  apiKey: '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',
+  apiKey: $OPENAIAPIKEY,
   initialRolePrompt: "You are a lens expert. Convert the user input into a JSON key-value pair based on the following model: { \"left\": { \"sphere\": null, \"cylinder\": null, \"axis\": null, \"diameter\": null, \"productNumber\": null, \"addition\": null }, \"right\": { \"sphere\": null, \"cylinder\": null, \"axis\": null, \"diameter\": null, \"productNumber\": null, \"addition\": null }, \"pupilDistance\": null, \"baseCurve\": null, \"lensMaterial\": null, \"errors\": [] }. Follow these rules when creating the JSON: 1. Value requirements: - \"sphere\": Must be between -10 and +10 diopters and is a mandatory field. If missing, or invalid, add an error message to the \"errors\" array in the JSON. 2. The only allowed values for \"lens-material\" are \"Polycarbonate\", \"Mineral\", and \"Organic\".",
   gptModel: 'gpt-4o'
 };
