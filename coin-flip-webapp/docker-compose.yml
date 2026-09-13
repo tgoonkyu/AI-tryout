@@ -1,0 +1,126 @@
+# Docker Compose Configuration for Coin Flip Application
+# Provides development environment with PostgreSQL, Backend API, and Frontend
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  database:
+    image: postgres:16-alpine
+    container_name: coinflip-database
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: coinflip_dev
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - coinflip-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d coinflip_dev"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Spring Boot Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: coinflip-backend
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_USERNAME: admin
+      DB_PASSWORD: secret
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/coinflip_dev
+      JWT_SECRET: your-256-bit-secret-key-change-in-production-environment
+      JWT_EXPIRATION: 86400000
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+      - backend_cache:/root/.m2
+    networks:
+      - coinflip-network
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    command: ["sh", "-c", "dos2unix ./mvnw && chmod +x ./mvnw && ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: coinflip-frontend
+    restart: unless-stopped
+    environment:
+      REACT_APP_API_URL: http://localhost:8080/api
+      REACT_APP_WS_URL: ws://localhost:8080/ws
+      CHOKIDAR_USEPOLLING: true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    networks:
+      - coinflip-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+  # Redis (Future - for session management and caching)
+  # Commented out for MVP, can be enabled later
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: coinflip-redis
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - coinflip-network
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+    name: coinflip_postgres_data
+  
+  backend_cache:
+    driver: local
+    name: coinflip_backend_cache
+  
+  frontend_node_modules:
+    driver: local
+    name: coinflip_frontend_node_modules
+  
+  # redis_data:
+  #   driver: local
+  #   name: coinflip_redis_data
+
+networks:
+  coinflip-network:
+    driver: bridge
+    name: coinflip-network

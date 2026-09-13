@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪙</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Coin Flip</title>
+    <style>
+      * {
+        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><text y="40" font-size="40" transform="scale(-1, 1) translate(-48, 0)">🪄</text></svg>') 0 0, auto !important;
+      }
+      button, a, [role="button"], input[type="button"], input[type="submit"], .MuiButton-root, .MuiIconButton-root, .MuiChip-root, .MuiMenuItem-root, span[role="button"], .MuiFormControlLabel-root, .MuiSwitch-root {
+        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><text y="35" font-size="35">👆</text></svg>') 10 0, pointer !important;
+      }
+      /* Increase clickable regions */
+      button, .MuiButton-root {
+        min-height: 48px !important;
+        min-width: 48px !important;
+        padding: 12px 24px !important;
+      }
+      .MuiIconButton-root {
+        padding: 16px !important;
+        min-width: 56px !important;
+        min-height: 56px !important;
+      }
+      .MuiSwitch-root {
+        padding: 12px !important;
+      }
+      .MuiChip-root {
+        min-height: 40px !important;
+        padding: 8px 16px !important;
+      }
+      a, [role="button"] {
+        padding: 8px !important;
+        min-height: 44px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+      }
+      .MuiTableRow-root {
+        cursor: pointer;
+      }
+      .MuiTableRow-root:hover {
+        background-color: rgba(0, 0, 0, 0.04) !important;
+      }
+      .MuiMenuItem-root {
+        display: flex !important;
+        align-items: center !important;
+      }
+      /* Improve header button text legibility */
+      .MuiAppBar-root .MuiButton-root {
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+      }
+      .MuiAppBar-root .MuiIconButton-root {
+        font-size: 1.8rem !important;
+      }
+      .MuiAppBar-root .MuiSvgIcon-root {
+        font-size: 1.8rem !important;
+        filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

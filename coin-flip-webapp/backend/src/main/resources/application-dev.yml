@@ -1,0 +1,42 @@
+# Development Profile Configuration
+spring:
+  # Development Database Configuration
+  datasource:
+    url: jdbc:h2:mem:coinflip_dev;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  
+  # JPA Development Settings
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # Recreate tables on startup for development
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+        use_sql_comments: true
+
+# Development Server Configuration
+server:
+  port: 8080
+
+# Detailed Logging for Development
+logging:
+  level:
+    com.coinflip: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Development-specific properties
+app:
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173
+  
+  # More lenient rate limiting in development
+  rate-limit:
+    requests-per-minute: 120

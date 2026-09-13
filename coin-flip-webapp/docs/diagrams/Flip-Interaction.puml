@@ -1,0 +1,32 @@
+﻿@startuml Flip-Interaction
+participant "User" as User
+participant "CoinFlipButton" as Button
+participant "SoundManager" as Sound
+participant "ThreejsScene" as Scene
+participant "API Client" as API
+participant "Backend" as Backend
+
+User -> Button : Click "Flip"
+Button -> Sound : playStartSound()
+Button -> Button : setAnimating(true)
+Button -> Scene : startAnimation()
+Button -> API : POST /api/flip
+
+par Animation & API Call
+    Scene -> Scene : 3D rotation (3-5s)
+    Scene -> Sound : playRattleSound()
+    API -> Backend : {userId/sessionId}
+    Backend -> API : {result: 'HEADS'}
+end
+
+API -> Button : Flip result received
+Button -> Scene : setFinalResult('HEADS')
+Scene -> Scene : Stop animation at HEADS pose
+Scene -> Sound : playResultSound()
+Button -> Button : setAnimating(false)
+Button -> Button : updateHistory(result)
+
+note right of Scene : Three.js animation:\n- Deterministic spin\n- Result-based final pose\n- 60 FPS rendering
+note right of API : Concurrent execution:\n- Animation for suspense\n- API call for result\n- Sync at completion
+
+@enduml

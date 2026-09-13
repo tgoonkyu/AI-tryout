@@ -1,0 +1,51 @@
+@startuml Deployment-Architecture
+
+!define RECTANGLE_STYLE fill=#E1F5FE,stroke=#01579B,stroke-width=2
+!define DATABASE_STYLE fill=#FFF3E0,stroke=#E65100,stroke-width=2
+!define SERVICE_STYLE fill=#E8F5E9,stroke=#1B5E20,stroke-width=2
+
+actor User as user
+
+package "Browser Environment" {
+    rectangle "React SPA" as spa <<Frontend>> #E1F5FE
+    rectangle "Local Storage" as storage <<Browser Storage>> #FFF3E0
+}
+
+package "Docker Environment" {
+    rectangle "Spring Boot API" as backend <<Backend Service>> #E8F5E9
+    database "PostgreSQL 16" as db <<Database>> #FFF3E0
+}
+
+package "Static Assets" {
+    rectangle "Sound Files" as sounds <<Audio Assets>> #F3E5F5
+    rectangle "SVG Coin Faces" as images <<Image Assets>> #F3E5F5
+}
+
+user --> spa : "Access via HTTPS"
+spa --> storage : "Store session data"
+spa --> backend : "REST API calls\n(JWT Auth)"
+spa --> sounds : "Load audio"
+spa --> images : "Load SVG"
+backend --> db : "JDBC/JPA queries"
+
+note right of spa
+  - React 18+ with TypeScript
+  - Material-UI components
+  - CSS3 animations
+  - Context API state
+end note
+
+note right of backend
+  - Spring Boot 3.x
+  - JWT authentication (24h)
+  - SecureRandom flip logic
+  - RESTful endpoints
+end note
+
+note right of db
+  - Users table
+  - Flips table
+  - Indexed on userId & createdAt
+end note
+
+@enduml
